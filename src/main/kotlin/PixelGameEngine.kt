@@ -1,6 +1,5 @@
 
 
-import PixelGameEngine.Sprite
 import java.awt.*
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
@@ -8,7 +7,7 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.image.BufferedImage
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 import javax.imageio.ImageIO
 import javax.swing.JFrame
 
@@ -107,21 +106,21 @@ abstract class PixelGameEngine {
     private val b_keys = BooleanArray(1024)
     private val b_mouse = BooleanArray(6)
     var frame: JFrame
-    fun GetMouseScroll(): Int {
+    fun getMouseScroll(): Int {
         return nScrollDir
     }
 
-    fun GetKey(i: Int): Boolean {
+    fun getKey(i: Int): Boolean {
         return b_keys[i]
     }
 
-    fun GetMouse(i: Int): Boolean {
+    fun getMouse(i: Int): Boolean {
         return b_mouse[i]
     }
 
-    abstract fun OnUserCreate(): Boolean
-    abstract fun OnUserUpdate(fElapsedTime: Float): Boolean
-    fun OnUserDestroy(): Boolean {
+    abstract fun onUserCreate(): Boolean
+    abstract fun onUserUpdate(fElapsedTime: Float): Boolean
+    fun onUserDestroy(): Boolean {
         return true
     }
 
@@ -150,7 +149,6 @@ abstract class PixelGameEngine {
     constructor(sTitle: String, width: Int, height: Int, scaleX: Int, scaleY: Int) {
         maxFPS = Int.MAX_VALUE
         title = sTitle
-        title = title
         this.scaleX = scaleX
         this.scaleY = scaleY
         ScreenHeight = height * this.scaleY
@@ -171,31 +169,31 @@ abstract class PixelGameEngine {
         display.start()
     }
 
-    fun MouseX(): Int {
+    fun mouseX(): Int {
         return mouseX
     }
 
-    fun MouseY(): Int {
+    fun mouseY(): Int {
         return mouseY
     }
 
-    fun ScreenHeight(): Int {
+    fun screenHeight(): Int {
         return ScreenHeight / scaleY
     }
 
-    fun ScreenWidth(): Int {
+    fun screenWidth(): Int {
         return ScreenWidth / scaleX
     }
 
-    fun Clear(color: Color?) {
-        FillRect(0, 0, ScreenWidth(), ScreenHeight(), color)
+    fun clear(color: Color?) {
+        fillRect(0, 0, screenWidth(), screenHeight(), color)
     }
 
-    fun Translate(dx: Int, dy: Int) {
+    fun translate(dx: Int, dy: Int) {
         g!!.translate(dx, dy)
     }
 
-    fun Rotate(r: Int) {
+    fun rotate(r: Int) {
         g!!.rotate(r.toDouble())
     }
 
@@ -209,14 +207,14 @@ abstract class PixelGameEngine {
      * @param colorcolor The color used to draw the rectangle
      * @since 1.0
      */
-    fun DrawRect(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
+    fun drawRect(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
         g?.let {
             g!!.color = color
             g!!.drawRect(x, y, dx, dy)
         } ?: kotlin.run { println("g is null") }
     }
 
-    fun DrawRect(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
+    fun drawRect(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
         g!!.color = color
         g!!.drawRect(x.toInt(), y.toInt(), dx.toInt(), dy.toInt())
     }
@@ -231,12 +229,12 @@ abstract class PixelGameEngine {
      * @param color The color used to draw the rectangle
      * @since 1.0
      */
-    fun FillRect(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
+    fun fillRect(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
         g!!.color = color
         g!!.fillRect(x, y, dx, dy)
     }
 
-    fun FillRect(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
+    fun fillRect(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
         g!!.color = color
         g!!.fillRect(x.toInt(), y.toInt(), dx.toInt(), dy.toInt())
     }
@@ -253,12 +251,12 @@ abstract class PixelGameEngine {
      * @param color     The color used to draw the rectangle
      * @since 2.1
      */
-    fun DrawRoundedRect(x: Int, y: Int, dx: Int, dy: Int, arcWidth: Int, arcHeight: Int, color: Color?) {
+    fun drawRoundedRect(x: Int, y: Int, dx: Int, dy: Int, arcWidth: Int, arcHeight: Int, color: Color?) {
         g!!.color = color
         g!!.drawRoundRect(x, y, dx, dy, arcWidth, arcHeight)
     }
 
-    fun DrawRoundedRect(x: Float, y: Float, dx: Float, dy: Float, arcWidth: Float, arcHeight: Float, color: Color?) {
+    fun drawRoundedRect(x: Float, y: Float, dx: Float, dy: Float, arcWidth: Float, arcHeight: Float, color: Color?) {
         g!!.color = color
         g!!.drawRoundRect(
             x.toInt(),
@@ -278,12 +276,12 @@ abstract class PixelGameEngine {
      * @param color     The color used to draw the rectangle
      * @since 2.1
      */
-    fun FillRoundedRect(x: Int, y: Int, dx: Int, dy: Int, arcWidth: Int, arcHeight: Int, color: Color?) {
+    fun fillRoundedRect(x: Int, y: Int, dx: Int, dy: Int, arcWidth: Int, arcHeight: Int, color: Color?) {
         g!!.color = color
         g!!.fillRoundRect(x, y, dx, dy, arcWidth, arcHeight)
     }
 
-    fun FillRoundedRect(x: Float, y: Float, dx: Float, dy: Float, arcWidth: Float, arcHeight: Float, color: Color?) {
+    fun fillRoundedRect(x: Float, y: Float, dx: Float, dy: Float, arcWidth: Float, arcHeight: Float, color: Color?) {
         g!!.color = color
         g!!.fillRoundRect(
             x.toInt(),
@@ -300,12 +298,12 @@ abstract class PixelGameEngine {
      * @param color  The color used to draw the Circle
      * @since 1.0
      */
-    fun DrawCircle(x: Int, y: Int, radius: Int, color: Color?) {
+    fun drawCircle(x: Int, y: Int, radius: Int, color: Color?) {
         g!!.color = color
         g!!.drawOval(x, y, radius, radius)
     }
 
-    fun DrawCircle(x: Float, y: Float, radius: Float, color: Color?) {
+    fun drawCircle(x: Float, y: Float, radius: Float, color: Color?) {
         g!!.color = color
         g!!.drawOval(x.toInt(), y.toInt(), radius.toInt(), radius.toInt())
     }
@@ -319,12 +317,12 @@ abstract class PixelGameEngine {
      * @param color  The color used to draw the Circle
      * @since 1.0
      */
-    fun FillCircle(x: Int, y: Int, radius: Int, color: Color?) {
+    fun fillCircle(x: Int, y: Int, radius: Int, color: Color?) {
         g!!.color = color
         g!!.fillOval(x, y, radius, radius)
     }
 
-    fun FillCircle(x: Float, y: Float, radius: Float, color: Color?) {
+    fun fillCircle(x: Float, y: Float, radius: Float, color: Color?) {
         g!!.color = color
         g!!.fillOval(x.toInt(), y.toInt(), radius.toInt(), radius.toInt())
     }
@@ -339,12 +337,12 @@ abstract class PixelGameEngine {
      * @param color The color used to draw the Circle
      * @since 1.0
      */
-    fun DrawOval(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
+    fun drawOval(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
         g!!.color = color
         g!!.drawOval(x, y, dx, dy)
     }
 
-    fun DrawOval(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
+    fun drawOval(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
         g!!.color = color
         g!!.drawOval(x.toInt(), y.toInt(), dx.toInt(), dy.toInt())
     }
@@ -359,12 +357,12 @@ abstract class PixelGameEngine {
      * @param color The color used to draw the Circle
      * @since 1.0
      */
-    fun FillOval(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
+    fun fillOval(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
         g!!.color = color
         g!!.fillOval(x, y, dx, dy)
     }
 
-    fun FillOval(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
+    fun fillOval(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
         g!!.color = color
         g!!.fillOval(x.toInt(), y.toInt(), dx.toInt(), dy.toInt())
     }
@@ -378,7 +376,7 @@ abstract class PixelGameEngine {
      * @param s     The String to be Drew
      * @since 1.0
      */
-    fun DrawString(x: Int, y: Int, color: Color?, s: Any) {
+    fun drawString(x: Int, y: Int, color: Color?, s: Any) {
         g!!.color = color
         g!!.drawString(s.toString(), x, y + 10)
     }
@@ -393,7 +391,7 @@ abstract class PixelGameEngine {
      * @param data     The data to fill in the template string;
      * @since 1.0
      */
-    fun DrawFormattedString(x: Int, y: Int, color: Color?, template: String?, vararg data: Any?) {
+    fun drawFormattedString(x: Int, y: Int, color: Color?, template: String?, vararg data: Any?) {
         g!!.color = color
         g!!.drawString(String.format(template!!, *data), x, y + 10)
     }
@@ -406,11 +404,11 @@ abstract class PixelGameEngine {
      * @param img The buffered image to draw
      * @since 1.0
      */
-    fun DrawSprite(x: Int, y: Int, img: Sprite) {
+    fun drawSprite(x: Int, y: Int, img: Sprite) {
         g!!.drawImage(img.img, x, y, null)
     }
 
-    fun DrawSprite(x: Float, y: Float, img: Sprite) {
+    fun drawSprite(x: Float, y: Float, img: Sprite) {
         g!!.drawImage(img.img, x.toInt(), y.toInt(), null)
     }
 
@@ -424,7 +422,7 @@ abstract class PixelGameEngine {
      * @param img     The buffered image to draw
      * @since 1.0
      */
-    fun GetPartialSprite(topX: Int, topY: Int, bottomX: Int, bottomY: Int, img: Sprite): Sprite {
+    fun getPartialSprite(topX: Int, topY: Int, bottomX: Int, bottomY: Int, img: Sprite): Sprite {
         return Sprite(img.img!!.getSubimage(topX, topY, bottomX, bottomY))
     }
 
@@ -436,12 +434,12 @@ abstract class PixelGameEngine {
      * @param color The color of the pixel
      * @since 1.0
      ** */
-    fun DrawPixel(x: Int, y: Int, color: Color?) {
+    fun drawPixel(x: Int, y: Int, color: Color?) {
         g!!.color = color
         g!!.drawLine(x, y, x, y)
     }
 
-    fun DrawPixel(x: Float, y: Float, color: Color?) {
+    fun drawPixel(x: Float, y: Float, color: Color?) {
         g!!.color = color
         g!!.drawLine(x.toInt(), y.toInt(), x.toInt(), y.toInt())
     }
@@ -456,12 +454,12 @@ abstract class PixelGameEngine {
      * @param color  The Color of the line
      * @since 1.0
      */
-    fun DrawLine(startX: Int, startY: Int, endX: Int, endY: Int, color: Color?) {
+    fun drawLine(startX: Int, startY: Int, endX: Int, endY: Int, color: Color?) {
         g!!.color = color
         g!!.drawLine(startX, startY, endX, endY)
     }
 
-    fun DrawLine(startX: Float, startY: Float, endX: Float, endY: Float, color: Color?) {
+    fun drawLine(startX: Float, startY: Float, endX: Float, endY: Float, color: Color?) {
         g!!.color = color
         g!!.drawLine(startX.toInt(), startY.toInt(), endX.toInt(), endY.toInt())
     }
@@ -477,7 +475,7 @@ abstract class PixelGameEngine {
      * @param color       The color for the model
      * @since 1.3
      */
-    fun DrawWireframeModel(modelCoords: ArrayList<FloatArray>, x: Int, y: Int, r: Float, s: Int, color: Color?) {
+    fun drawWireframeModel(modelCoords: ArrayList<FloatArray>, x: Int, y: Int, r: Float, s: Int, color: Color?) {
         val transformedCoords = ArrayList<FloatArray>()
         val vertices = modelCoords.size
         //Rotate
@@ -502,7 +500,7 @@ abstract class PixelGameEngine {
         }
         for (i in 0 until vertices + 1) {
             val j = i + 1
-            DrawLine(
+            drawLine(
                 transformedCoords[i % vertices][0].toInt(),
                 transformedCoords[i % vertices][1].toInt(),
                 transformedCoords[j % vertices][0].toInt(),
@@ -520,7 +518,7 @@ abstract class PixelGameEngine {
      * @return The Color of The given pixel
      * @since 2.1
      */
-    fun GetPixel(img: Sprite, x: Int, y: Int): Color {
+    fun getPixel(img: Sprite, x: Int, y: Int): Color {
         val rgb = img.img!!.getRGB(x, y)
         val red = rgb shr 16 and 0xFF
         val green = rgb shr 8 and 0xFF
@@ -528,7 +526,7 @@ abstract class PixelGameEngine {
         return Color(red, green, blue)
     }
 
-    fun GetTintedSprite(sprite: Sprite, color: Color): Sprite {
+    fun getTintedSprite(sprite: Sprite, color: Color): Sprite {
         val tintedSprite = BufferedImage(sprite.img!!.width, sprite.img!!.height, BufferedImage.TRANSLUCENT)
         val graphics = tintedSprite.createGraphics()
         graphics.drawImage(sprite.img, 0, 0, null)
@@ -553,8 +551,8 @@ abstract class PixelGameEngine {
         return Sprite(tintedSprite)
     }
 
-    fun GetTintedPartialSprite(topX: Int, topY: Int, bottomX: Int, bottomY: Int, img: Sprite, color: Color): Sprite {
-        return GetTintedSprite(Sprite(img.img!!.getSubimage(topX, topY, bottomX, bottomY)), color)
+    fun getTintedPartialSprite(topX: Int, topY: Int, bottomX: Int, bottomY: Int, img: Sprite, color: Color): Sprite {
+        return getTintedSprite(Sprite(img.img!!.getSubimage(topX, topY, bottomX, bottomY)), color)
     }
 
     class View : Canvas(), Runnable {
@@ -591,8 +589,8 @@ abstract class PixelGameEngine {
             g!!.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED)
             g!!.scale(engine!!.scaleX.toDouble(), engine!!.scaleY.toDouble())
             g!!.font = Font("Consolas", 1, 8)
-            if (!engine!!.OnUserUpdate(delta)) {
-                engine!!.OnUserDestroy()
+            if (!engine!!.onUserUpdate(delta)) {
+                engine!!.onUserDestroy()
                 stop()
             }
             g!!.dispose()
@@ -621,7 +619,7 @@ abstract class PixelGameEngine {
             g!!.scale(engine!!.scaleX.toDouble(), engine!!.scaleY.toDouble())
             g!!.font = Font("Consolas", 1, 8)
 
-            if (!engine!!.OnUserCreate()) {
+            if (!engine!!.onUserCreate()) {
                 stop()
             }
             while (isRunning) {
