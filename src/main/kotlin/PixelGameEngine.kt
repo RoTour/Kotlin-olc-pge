@@ -206,12 +206,14 @@ abstract class PixelGameEngine {
      * @param y     The y position;
      * @param dx    The size in the x axis;
      * @param dy    The size in the y axis;
-     * @param color The color used to draw the rectangle
+     * @param colorcolor The color used to draw the rectangle
      * @since 1.0
      */
     fun DrawRect(x: Int, y: Int, dx: Int, dy: Int, color: Color?) {
-        g!!.color = color
-        g!!.drawRect(x, y, dx, dy)
+        g?.let {
+            g!!.color = color
+            g!!.drawRect(x, y, dx, dy)
+        } ?: kotlin.run { println("g is null") }
     }
 
     fun DrawRect(x: Float, y: Float, dx: Float, dy: Float, color: Color?) {
@@ -607,6 +609,18 @@ abstract class PixelGameEngine {
             val amtOfRenders = maxFPS.toDouble() //MAX FPS
             val renderNs = 1000000000 / amtOfRenders
             var renderDelta = 0.0
+
+
+            var bs = bufferStrategy
+            if (bs == null) {
+                this.createBufferStrategy(4)
+            }
+            bs = bufferStrategy
+            g = bs.drawGraphics as Graphics2D
+            g!!.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED)
+            g!!.scale(engine!!.scaleX.toDouble(), engine!!.scaleY.toDouble())
+            g!!.font = Font("Consolas", 1, 8)
+
             if (!engine!!.OnUserCreate()) {
                 stop()
             }
