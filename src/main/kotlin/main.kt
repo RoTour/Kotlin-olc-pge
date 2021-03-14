@@ -1,11 +1,18 @@
-
 import java.awt.Color
 
+const val NB_TILES_X = 15
+const val NB_TILES_Y = 10
 
-internal class Example(title: String?, width: Int, height: Int, scaleX: Int, scaleY: Int) :
-    PixelGameEngine("Example", width, height, scaleX, scaleY) {
+internal class Example(title: String, width: Int, height: Int, scaleX: Int, scaleY: Int) :
+    PixelGameEngine(title, width, height, scaleX, scaleY) {
     override fun onUserCreate(): Boolean {
-        drawRect(16, 16, 64, 64, Color.black)
+        for(i in 16 until 17*NB_TILES_X step 17){
+            drawLine(i, 0, i, screenHeight(),Color.black)
+            drawLine(0, i, screenWidth(), i,Color.black)
+        }
+        val posX = 3
+        val posY = 4
+        drawRect(17*posX,17*posY, 15,15, Color.red)
         return true
     }
 
@@ -15,7 +22,7 @@ internal class Example(title: String?, width: Int, height: Int, scaleX: Int, sca
     }
 }
 
-fun main(args: Array<String>) {
-    val ex = Example("Example Title", 256, 256, 4, 4)
+fun main() {
+    val ex = Example("Incredible App", 17*NB_TILES_X+2, 17*NB_TILES_Y+8, 4, 4)
     ex.start()
 }
